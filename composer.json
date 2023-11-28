@@ -1,7 +1,7 @@
 {
     "name": "laravel/laravel",
     "type": "project",
-    "description": "The API project for life saving arts.",
+    "description": "The API project for art saving lives.",
     "keywords": [
         "laravel",
         "framework"
@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.2",
+        "laravel/fortify": "^1.18",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8"
