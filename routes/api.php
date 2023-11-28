@@ -32,6 +32,8 @@ Route::post('/password/forgot', [PasswordResetLinkController::class, 'store'])->
 Route::get('/password/reset/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
 Route::post('/password/reset', [NewPasswordController::class, 'store'])->name('password.update');
 
+Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])
+->name('verification.send')->middleware('auth:sanctum');
 Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, 'verify'])->name('verification.verify');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
