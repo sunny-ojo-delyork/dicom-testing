@@ -30,6 +30,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'notify_on_events_and_virtual_exhibitions'
     ];
 
+    //user types
+    public static $userTypes = ['artist', 'buyer', 'curator', 'enthusiast'];
+
     /**
      * The attributes that should be hidden for serialization.
      *

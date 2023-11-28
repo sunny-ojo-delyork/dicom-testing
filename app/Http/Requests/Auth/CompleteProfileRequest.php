@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class CompleteProfileRequest extends FormRequest
 {
    
-    private static $userTypes = ['artist', 'buyer', 'curator', 'enthusiast'];
     /**
      * Get the validation rules that apply to the request.
      *
@@ -18,11 +18,11 @@ class CompleteProfileRequest extends FormRequest
     {
         return [
           'name' => ['required', 'string','max:255'],
-          'type' => ['required', 'string',  'max:255', Rule::in(static::$userTypes)],
-          'address' => ['required', 'string',  'max:255'],
-          'country' => ['required', 'string',  'max:255'],
-          'notify_on_updates' => ['required', 'boolean'],
-          'notify_on_events_and_virtual_exhibitions' => ['required', 'boolean'],
+          'type' => ['required', 'string',  'max:255', Rule::in(User::$userTypes)],
+          'address' => ['nullable', 'string',  'max:255'],
+          'country' => ['nullable', 'string',  'max:255'],
+          'notify_on_updates' => ['nullable', 'boolean'],
+          'notify_on_events_and_virtual_exhibitions' => ['nullable', 'boolean'],
         ];
     }
 }

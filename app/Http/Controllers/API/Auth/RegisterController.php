@@ -28,6 +28,7 @@ class RegisterController extends Controller
         DB::commit();
         return $this->successResponse(['user' => $user, 'token' => $token->plainTextToken], 'Account created successfully', 201);
     } catch (\Throwable $th) {
+        DB::rollBack();
         Log::error("failed to register user. Reason: ".$th->getMessage());
        return $this->errorResponse([], 'Failed to register user, please try again');
     }
@@ -39,10 +40,10 @@ class RegisterController extends Controller
         Auth::user()->update([
         'name' => $data['name'],
         'type' => $data['type'],
-        'address' => $data['address'],
-        'country' => $data['country'],
-        'notify_on_updates' => $data['notify_on_updates'],
-        'notify_on_events_and_virtual_exhibitions' => $data['notify_on_events_and_virtual_exhibitions'],
+        'address' => $data['address'] ?? null,
+        'country' => $data['country'] ?? null,
+        'notify_on_updates' => $data['notify_on_updates'] ?? false,
+        'notify_on_events_and_virtual_exhibitions' => $data['notify_on_events_and_virtual_exhibitions'] ?? false,
     ]);
         return $this->successResponse(['user' => Auth::user()->refresh()], 'Profile updated successfully', 201);
     } catch (\Throwable $th) {

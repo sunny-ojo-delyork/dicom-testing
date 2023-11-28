@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('type')->nullable();
             $table->string('country')->nullable();
             $table->string('address')->nullable();
-            $table->boolean('notify_on_updates')->nullable();
-            $table->boolean('notify_on_events_and_virtual_exhibitions')->nullable();
+            $table->boolean('notify_on_updates')->nullable()->default(0);
+            $table->boolean('notify_on_events_and_virtual_exhibitions')->nullable()->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
