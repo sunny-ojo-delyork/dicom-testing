@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     public function login (LoginRequest $request) {
-   $loginRequest = $request->validated();
+    $loginRequest = $request->validated();
 
         if (Auth::attempt($loginRequest)) {
             $user = Auth::user();

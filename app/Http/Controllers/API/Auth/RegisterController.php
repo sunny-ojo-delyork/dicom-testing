@@ -52,4 +52,69 @@ class RegisterController extends Controller
     }
 
     }
+
+    public function getPayApplicationFeeByVoucher(Request $request)
+    {
+        $this->validate($request, [
+            'voucher'=> 'required'
+        ]);
+        
+        $voucher = Voucher::where(['code' => $request->post('voucher')])->first();
+
+        if ($voucher != null) {
+
+
+            $today = date_create(date('Y-m-d'));
+            $expiry_date = date_create($voucher->expiry_date);
+
+            $dateObject = date_diff($today, $expiry_date);
+
+            if ($voucher === null || $voucher->status == 'used') {
+
+                return back()->with('error', 'The voucher has already been used.');
+
+
+            } elseif ($voucher->status == 'not used' && (int)$dateObject->format("%a") < 0) {
+
+                //Expired
+                return back()->with('error', 'The voucher entered  has expired.');
+
+
+            } else {
+
+                $payment = Payment::firstOrCreate([
+
+                    'reference_no' => $this->generateUniqueTransactionCode(),
+                    'amount' => $request->amount,
+                    'email_address' => Session::get('student_info')->email_address,
+                    'currency' => 'voucher',
+                    'status' => 'success',
+                    'channel' => 'voucher',
+                    'description' => 'Registration fee',
+                    'method' => 'onine',
+                    'voucher_id' => $voucher->id,
+                    'type' => 0,
+                    'plan' => 'full',
+                    'created_at' => date('Y-m-d'),
+                    'updated_at' => date('Y-m-d')
+
+
+                ]);
+
+                if ($payment) {
+
+                    $voucher::where('id', $voucher->id)->update(['status' => 'used']);
+                    Session::put('user_email', $payment->email_address);
+                    return Redirect::route('student.register');
+
+                }
+
+            }
+
+        } else {
+            return back()->with('error', 'Voucher code entered does not exist. Check and try again');
+        }
+
+
+    }
 }
